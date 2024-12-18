@@ -1,0 +1,281 @@
+[gd_scene load_steps=26 format=4 uid="uid://cjmdnx4iscw56"]
+
+[ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_61yjy"]
+[ext_resource type="PackedScene" uid="uid://dhcirc6pqhccx" path="res://scenes/player.tscn" id="1_g65sn"]
+[ext_resource type="Texture2D" uid="uid://3dsuiadqft6q" path="res://assets/background.png" id="2_t47gp"]
+[ext_resource type="Texture2D" uid="uid://bmq0vi6fr703t" path="res://assets/platform.png" id="3_8xeg8"]
+[ext_resource type="PackedScene" uid="uid://c2h8m12topnm6" path="res://scenes/platform.tscn" id="3_soact"]
+[ext_resource type="AudioStream" uid="uid://b5mcm7ue6t4c5" path="res://assets/background.mp3" id="4_17dep"]
+[ext_resource type="PackedScene" uid="uid://dbjk32dprik3o" path="res://scenes/coin.tscn" id="4_ikoxb"]
+[ext_resource type="Texture2D" uid="uid://cdu6h1xh8dgs4" path="res://assets/grid.png" id="5_4s20e"]
+[ext_resource type="PackedScene" uid="uid://dga3r6rdgtxxk" path="res://scenes/killzone.tscn" id="5_bn5ow"]
+[ext_resource type="FontFile" uid="uid://bttfbsj5ujejj" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="8_wylvb"]
+[ext_resource type="PackedScene" uid="uid://dbwjvw52mvf8d" path="res://scenes/answer.tscn" id="10_2uccu"]
+[ext_resource type="Texture2D" uid="uid://dcbtrmnpprgq1" path="res://assets/decagon.png" id="12_6m1ba"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nmd10"]
+texture = ExtResource("5_4s20e")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_qd52v"]
+tile_size = Vector2i(128, 128)
+sources/1 = SubResource("TileSetAtlasSource_nmd10")
+
+[sub_resource type="Environment" id="Environment_p7ti4"]
+background_mode = 3
+glow_enabled = true
+glow_intensity = 1.5
+glow_bloom = 0.8
+glow_hdr_threshold = 4.0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qqgxi"]
+texture = ExtResource("3_8xeg8")
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, -5, -8, -4.875)
+
+[sub_resource type="TileSet" id="TileSet_276so"]
+physics_layer_0/collision_layer = 1
+sources/1 = SubResource("TileSetAtlasSource_qqgxi")
+
+[sub_resource type="Animation" id="Animation_1o4pd"]
+length = 1.75
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = false
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.73333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(222, -57), Vector2(351, -57)]
+}
+
+[sub_resource type="Animation" id="Animation_dv67a"]
+resource_name = "move"
+length = 2.0
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(221, -57), Vector2(351, -57)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yeulf"]
+_data = {
+"RESET": SubResource("Animation_1o4pd"),
+"move": SubResource("Animation_dv67a")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pfuii"]
+size = Vector2(20, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3ji2s"]
+size = Vector2(20, 13)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p3yid"]
+size = Vector2(58, 9)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_85nsp"]
+size = Vector2(56, 11)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_o14yy"]
+
+[node name="Game" type="Node2D"]
+position = Vector2(-3, 3)
+
+[node name="GameManager" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("1_61yjy")
+
+[node name="Score" type="Label" parent="GameManager"]
+offset_left = 900.0
+offset_top = -79.0
+offset_right = 917.0
+offset_bottom = -70.0
+theme_override_colors/font_color = Color(0.450648, 0.450648, 0.450648, 1)
+theme_override_fonts/font = ExtResource("8_wylvb")
+theme_override_font_sizes/font_size = 8
+
+[node name="Player" parent="." instance=ExtResource("1_g65sn")]
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position = Vector2(0, -1)
+zoom = Vector2(4, 4)
+limit_bottom = 80
+position_smoothing_enabled = true
+
+[node name="World" type="Node" parent="."]
+
+[node name="Background" type="Sprite2D" parent="World"]
+z_index = -5
+position = Vector2(500, 0)
+scale = Vector2(130, 30)
+texture = ExtResource("2_t47gp")
+
+[node name="Grid" type="TileMapLayer" parent="World/Background"]
+position = Vector2(-2.51999, -1.99999)
+scale = Vector2(0.01, 0.0333333)
+tile_map_data = PackedByteArray("AAD9//7/AQAAAAAAAAD+//7/AQAAAAAAAAD///7/AQAAAAAAAAAAAP7/AQAAAAAAAAABAP7/AQAAAAAAAAACAP7/AQAAAAAAAAADAP7/AQAAAAAAAAAEAP7/AQAAAAAAAAAFAP7/AQAAAAAAAAAGAP7/AQAAAAAAAAAHAP7/AQAAAAAAAAAIAP7/AQAAAAAAAAAIAP//AQAAAAAAAAAHAAAAAQAAAAAAAAAGAAAAAQAAAAAAAAAFAAAAAQAAAAAAAAAEAAAAAQAAAAAAAAADAAAAAQAAAAAAAAACAAAAAQAAAAAAAAABAAAAAQAAAAAAAAABAP//AQAAAAAAAAAAAP//AQAAAAAAAAD/////AQAAAAAAAAACAP//AQAAAAAAAAADAP//AQAAAAAAAAAEAP//AQAAAAAAAAAFAP//AQAAAAAAAAAGAP//AQAAAAAAAAAHAP//AQAAAAAAAAAIAAAAAQAAAAAAAAD+////AQAAAAAAAAD9////AQAAAAAAAAD9/wAAAQAAAAAAAAD+/wAAAQAAAAAAAAD//wAAAQAAAAAAAAAAAAAAAQAAAAAAAAD9/wEAAQAAAAAAAAD+/wEAAQAAAAAAAAD//wEAAQAAAAAAAAAAAAEAAQAAAAAAAAABAAEAAQAAAAAAAAACAAEAAQAAAAAAAAADAAEAAQAAAAAAAAAEAAEAAQAAAAAAAAAFAAEAAQAAAAAAAAAGAAEAAQAAAAAAAAAHAAEAAQAAAAAAAAAIAAEAAQAAAAAAAAA=")
+tile_set = SubResource("TileSet_qd52v")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="World/Background"]
+stream = ExtResource("4_17dep")
+autoplay = true
+max_distance = 1e+06
+attenuation = 2.94781e-05
+bus = &"Music"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="World"]
+environment = SubResource("Environment_p7ti4")
+
+[node name="Platforms" type="TileMapLayer" parent="World/WorldEnvironment"]
+modulate = Color(0.7, 0.85, 1, 1)
+use_parent_material = true
+position = Vector2(-1, 3)
+tile_map_data = PackedByteArray("AAD//wAAAQAAAAAAAAAAAAAAAQAAAAAAAAABAAIAAQAAAAAAAAACAAIAAQAAAAAAAAAHAAIAAQAAAAAAAAAIAAIAAQAAAAAAAAALAAIAAQAAAAAAAAAMAAIAAQAAAAAAAAAEAPz/AQAAAAAAAAAFAPz/AQAAAAAAAAAGAPz/AQAAAAAAAAAKAPz/AQAAAAAAAAALAPz/AQAAAAAAAAAMAPz/AQAAAAAAAAASAP//AQAAAAAAAAAVAP7/AQAAAAAAAAAXAPz/AQAAAAAAAAAYAPz/AQAAAAAAAAACAP7/AQAAAAAAAAAPAAEAAQAAAAAAAAAQAAEAAQAAAAAAAAADAAIAAQAAAAAAAAADAP7/AQAAAAAAAAAZAPz/AQAAAAAAAAAaAPz/AQAAAAAAAAAcAPz/AQAAAAAAAAAbAPz/AQAAAAAAAAAfAP3/AQAAAAAAAAAgAP3/AQAAAAAAAAAfAPr/AQAAAAAAAAAgAPr/AQAAAAAAAAAiAPz/AQAAAAAAAAAjAPz/AQAAAAAAAAAkAPz/AQAAAAAAAAAlAPz/AQAAAAAAAAAmAPz/AQAAAAAAAAAnAPz/AQAAAAAAAAAoAPz/AQAAAAAAAAApAPz/AQAAAAAAAAAqAPz/AQAAAAAAAAArAPz/AQAAAAAAAAAsAPz/AQAAAAAAAAAtAPz/AQAAAAAAAAAuAPz/AQAAAAAAAAAvAPz/AQAAAAAAAAAyAP3/AQAAAAAAAAAzAP3/AQAAAAAAAAA0AP3/AQAAAAAAAAAyAPr/AQAAAAAAAAAzAPr/AQAAAAAAAAA0APr/AQAAAAAAAAA1APr/AQAAAAAAAAA1AP3/AQAAAAAAAAA3APz/AQAAAAAAAAA4APz/AQAAAAAAAAA5APz/AQAAAAAAAAA6APz/AQAAAAAAAAA7APz/AQAAAAAAAAA8APz/AQAAAAAAAAA9APz/AQAAAAAAAAA+APz/AQAAAAAAAAA=")
+tile_set = SubResource("TileSet_276so")
+
+[node name="Platform 1" parent="World/WorldEnvironment" instance=ExtResource("3_soact")]
+modulate = Color(0.701961, 0.85098, 1, 1)
+position = Vector2(16, -25)
+
+[node name="Platform 2" parent="World/WorldEnvironment" instance=ExtResource("3_soact")]
+modulate = Color(0.701961, 0.85098, 1, 1)
+position = Vector2(222, -57)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="World/WorldEnvironment/Platform 2"]
+libraries = {
+"": SubResource("AnimationLibrary_yeulf")
+}
+autoplay = "move"
+
+[node name="Coins" type="Node" parent="World"]
+
+[node name="Coin" parent="World/Coins" instance=ExtResource("4_ikoxb")]
+position = Vector2(84, -68)
+
+[node name="Coin2" parent="World/Coins" instance=ExtResource("4_ikoxb")]
+position = Vector2(295, -20)
+
+[node name="Coin3" parent="World/Coins" instance=ExtResource("4_ikoxb")]
+position = Vector2(126, 28)
+
+[node name="Labels" type="Node" parent="World"]
+
+[node name="Question 1" type="Node" parent="World/Labels"]
+
+[node name="Question" type="Label" parent="World/Labels/Question 1"]
+offset_left = 371.0
+offset_top = -90.0
+offset_right = 459.0
+offset_bottom = -67.0
+theme_override_colors/font_color = Color(0.450648, 0.450648, 0.450648, 1)
+theme_override_fonts/font = ExtResource("8_wylvb")
+theme_override_font_sizes/font_size = 8
+text = "What's 90 / 2"
+
+[node name="45" type="Label" parent="World/Labels/Question 1"]
+offset_left = 502.0
+offset_top = -107.0
+offset_right = 519.0
+offset_bottom = -98.0
+theme_override_colors/font_color = Color(0.450648, 0.450648, 0.450648, 1)
+theme_override_fonts/font = ExtResource("8_wylvb")
+theme_override_font_sizes/font_size = 8
+text = "45"
+
+[node name="Answer" parent="World/Labels/Question 1/45" instance=ExtResource("10_2uccu")]
+position = Vector2(8, 4)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Labels/Question 1/45/Answer"]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_pfuii")
+
+[node name="35" type="Label" parent="World/Labels/Question 1"]
+offset_left = 503.0
+offset_top = -59.0
+offset_right = 519.0
+offset_bottom = -49.0
+theme_override_colors/font_color = Color(0.450648, 0.450648, 0.450648, 1)
+theme_override_fonts/font = ExtResource("8_wylvb")
+theme_override_font_sizes/font_size = 8
+text = "35"
+
+[node name="Killzone" parent="World/Labels/Question 1/35" instance=ExtResource("5_bn5ow")]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Labels/Question 1/35/Killzone"]
+position = Vector2(8, 2.5)
+shape = SubResource("RectangleShape2D_3ji2s")
+
+[node name="Question 2" type="Node" parent="World/Labels"]
+
+[node name="Question" type="Label" parent="World/Labels/Question 2"]
+offset_left = 563.0
+offset_top = -100.0
+offset_right = 698.0
+offset_bottom = -77.0
+theme_override_colors/font_color = Color(0.450648, 0.450648, 0.450648, 1)
+theme_override_fonts/font = ExtResource("8_wylvb")
+theme_override_font_sizes/font_size = 8
+text = "What shape is this?"
+
+[node name="Octogon" type="Label" parent="World/Labels/Question 2"]
+offset_left = 803.0
+offset_top = -107.0
+offset_right = 858.0
+offset_bottom = -98.0
+theme_override_colors/font_color = Color(0.450648, 0.450648, 0.450648, 1)
+theme_override_fonts/font = ExtResource("8_wylvb")
+theme_override_font_sizes/font_size = 8
+text = "Octogon"
+
+[node name="Killzone" parent="World/Labels/Question 2/Octogon" instance=ExtResource("5_bn5ow")]
+position = Vector2(17, 0)
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Labels/Question 2/Octogon/Killzone"]
+position = Vector2(11, 3.5)
+shape = SubResource("RectangleShape2D_p3yid")
+
+[node name="Decagon" type="Label" parent="World/Labels/Question 2"]
+offset_left = 802.0
+offset_top = -59.0
+offset_right = 858.0
+offset_bottom = -49.0
+theme_override_colors/font_color = Color(0.450648, 0.450648, 0.450648, 1)
+theme_override_fonts/font = ExtResource("8_wylvb")
+theme_override_font_sizes/font_size = 8
+text = "Decagon"
+
+[node name="Answer" parent="World/Labels/Question 2/Decagon" instance=ExtResource("10_2uccu")]
+position = Vector2(26, 4)
+point = 10
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Labels/Question 2/Decagon/Answer"]
+position = Vector2(2, 0)
+shape = SubResource("RectangleShape2D_85nsp")
+
+[node name="Image" type="Sprite2D" parent="World/Labels/Question 2"]
+position = Vector2(723, -96)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("12_6m1ba")
+
+[node name="Killzone" parent="World" instance=ExtResource("5_bn5ow")]
+position = Vector2(-3, 3)
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Killzone"]
+position = Vector2(0, 75)
+shape = SubResource("WorldBoundaryShape2D_o14yy")
