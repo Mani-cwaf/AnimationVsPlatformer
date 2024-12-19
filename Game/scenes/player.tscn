@@ -1,7 +1,8 @@
-[gd_scene load_steps=26 format=3 uid="uid://dhcirc6pqhccx"]
+[gd_scene load_steps=30 format=3 uid="uid://dhcirc6pqhccx"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_aoria"]
 [ext_resource type="Texture2D" uid="uid://dusni3waen23a" path="res://assets/sprites/knight.png" id="1_tyn3i"]
+[ext_resource type="FontFile" uid="uid://bttfbsj5ujejj" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="3_64vrv"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_aumbo"]
 atlas = ExtResource("1_tyn3i")
@@ -171,6 +172,66 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_pbrcs"]
 radius = 4.0
 
+[sub_resource type="Animation" id="Animation_20mjx"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-25, -15)]
+}
+
+[sub_resource type="Animation" id="Animation_vnn42"]
+resource_name = "text"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.366667, 0.733333, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0.5), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.366667, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-75, -15), Vector2(-75, -35), Vector2(-75, -35), Vector2(-75, -30)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jumws"]
+_data = {
+"RESET": SubResource("Animation_20mjx"),
+"text": SubResource("Animation_vnn42")
+}
+
 [node name="Player" type="CharacterBody2D"]
 z_index = 5
 collision_layer = 2
@@ -187,3 +248,19 @@ frame_progress = 0.712282
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1, -5)
 shape = SubResource("CircleShape2D_pbrcs")
+
+[node name="Label" type="Label" parent="."]
+modulate = Color(1, 1, 1, 0)
+offset_left = -75.0
+offset_top = -30.0
+offset_right = 71.0
+offset_bottom = -22.0
+theme_override_fonts/font = ExtResource("3_64vrv")
+theme_override_font_sizes/font_size = 8
+text = "+1 Points"
+horizontal_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Label"]
+libraries = {
+"": SubResource("AnimationLibrary_jumws")
+}

@@ -6,6 +6,12 @@ var time = 0
 var land_time = 0
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var label: Label = $Label
+@onready var animation_player: AnimationPlayer = $Label/AnimationPlayer
+
+func show_text(text_to_show):
+	label.text = text_to_show
+	animation_player.play("text")
 
 func _physics_process(delta: float) -> void:
 	

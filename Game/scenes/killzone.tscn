@@ -4,10 +4,11 @@
 [ext_resource type="AudioStream" uid="uid://bqs0pj8m8dbfj" path="res://assets/death.mp3" id="2_kywjt"]
 
 [node name="Killzone" type="Area2D"]
+collision_mask = 2
 script = ExtResource("1_qpu56")
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 0.5
+wait_time = 0.2
 one_shot = true
 
 [node name="DeathSound" type="AudioStreamPlayer2D" parent="."]

@@ -1,10 +1,10 @@
 [gd_scene load_steps=2 format=3 uid="uid://dbwjvw52mvf8d"]
 
-[ext_resource type="Script" path="res://scenes/answer.gd" id="1_agbg8"]
+[ext_resource type="Script" path="res://scripts/answer.gd" id="1_6f18f"]
 
 [node name="Answer" type="Area2D"]
 collision_mask = 2
-script = ExtResource("1_agbg8")
+script = ExtResource("1_6f18f")
 point = 5
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

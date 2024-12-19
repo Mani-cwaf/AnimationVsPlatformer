@@ -1,9 +1,11 @@
 extends Area2D
 
 @onready var timer: Timer = $Timer
+@onready var game_manager: Node = %GameManager
+@onready var death_sound: AudioStreamPlayer2D = $DeathSound
 
 var player
-@onready var death_sound: AudioStreamPlayer2D = $DeathSound
+@export var point = 1
 
 func _on_body_entered(body: Node2D) -> void:
 	player = body
@@ -11,5 +13,6 @@ func _on_body_entered(body: Node2D) -> void:
 
 func _on_timer_timeout() -> void:
 	death_sound.play()
-	player.position.x = 0
-	player.position.y = 0
+	player.position.x = game_manager.spawnpoint.x
+	player.position.y = game_manager.spawnpoint.y
+	game_manager.add_points(-point)

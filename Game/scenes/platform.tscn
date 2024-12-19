@@ -6,7 +6,7 @@
 size = Vector2(31, 8)
 
 [sub_resource type="Gradient" id="Gradient_mus38"]
-colors = PackedColorArray(0.52114, 0.521141, 0.521141, 1, 0, 0, 0, 0)
+colors = PackedColorArray(0.683077, 0.683078, 0.683077, 1, 0, 0, 0, 0)
 
 [node name="Platform" type="AnimatableBody2D"]
 

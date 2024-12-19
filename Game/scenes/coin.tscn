@@ -229,7 +229,6 @@ animations = [{
 [node name="Coin" type="Area2D"]
 collision_mask = 2
 script = ExtResource("1_78foo")
-point = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_o83dr")
